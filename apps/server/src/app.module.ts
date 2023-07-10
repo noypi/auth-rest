@@ -11,7 +11,11 @@ import { RequestLoggerMiddleware } from './middleware/request-logger';
 
 @Module({
   imports: [
-    ConfigModule.forRoot(),
+    ConfigModule.forRoot({
+      envFilePath: !process.env.NODE_ENV
+        ? '.env'
+        : `.env.${process.env.NODE_ENV}`,
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
@@ -27,7 +31,7 @@ import { RequestLoggerMiddleware } from './middleware/request-logger';
       // dataSource receives the configured DataSourceOptions
       // and returns a Promise<DataSource>.
       dataSourceFactory: async (options: any) => {
-        console.debug('app.module useFactory', { options });
+        console.debug('app.module useFactory', { options, env: process.env.NODE_ENV });
         const dataSource = await new DataSource(options).initialize();
         return dataSource;
       },
