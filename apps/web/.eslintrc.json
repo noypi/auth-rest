@@ -1,0 +1,7 @@
+{
+  "extends": "next/core-web-vitals",
+  "rules": {
+    "complexity": ["warn", 4],
+    "max-depth": ["error", 3]
+  }
+}
