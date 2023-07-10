@@ -4,15 +4,17 @@
   "description": "",
   "main": "index.js",
   "scripts": {
-    "start:prod": "pnpm run --parallel start",
+    "start:prod": "NODE_ENV=production pnpm run --parallel start",
     "build": "pnpm run --parallel build",
     "dev": "pnpm run --parallel dev",
     "test": "echo \"Error: no test specified\" && exit 1",
-    "sql:load": "mysql -u root -p < ./apps/mysql/db.schema",
+    "sql:load": "mysql -u root -p < ./apps/mysql/db.sql",
     "sql:off": "sudo mysqladmin -p -u root shutdown",
     "sql:on": "sudo mysqld -u mysql",
     "sql:fix": "npm run sql:fix:user",
-    "sql:fix:user": "sudo chown -R mysql:mysql /var/run/mysqld; sudo chown -R mysql:mysql /var/lib/mysql"
+    "sql:fix:user": "sudo chown -R mysql:mysql /var/run/mysqld; sudo chown -R mysql:mysql /var/lib/mysql",
+    "docker:buildtest": "pnpm build && docker build -t testwebapp-authentication .",
+    "docker:runlinuxtest": "docker run --add-host=host.docker.internal:host-gateway -p8001:3000 -p8000:8000  testwebappsql"
   },
   "keywords": [],
   "author": "",
